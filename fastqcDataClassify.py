@@ -25,7 +25,7 @@ def run(inputs, output, fastqc_data, seq_columns, id_column):
     for path in inputs:
         input_file = pd.read_csv(path, sep='\t')
         for data_index, data_row in fastqc_data.iterrows():
-            data_seq = data_row['#Sequence']
+            data_seq = data_row['#Sequence'].upper()
             if data_seq not in columns_dic:
                 columns_dic[data_seq] = {'found': False, 'id': 'No Hit'}
             if columns_dic[data_seq]['found']:
@@ -36,7 +36,7 @@ def run(inputs, output, fastqc_data, seq_columns, id_column):
                     break;
 
                 for seq_col in seq_columns:
-                    input_seq = input_row[seq_col]
+                    input_seq = input_row[seq_col].upper()
                     if data_seq in input_seq:
                         columns_dic[data_seq]['found'] = True
                         columns_dic[data_seq]['id'] = input_row[id_column]
