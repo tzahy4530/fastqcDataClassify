@@ -5,6 +5,12 @@ import sys
 import io
 
 def readFastqcData(fastqc_path):
+    """
+    This function read the fastqc_data.txt file and extract
+    the 'overrepresented sequences' table into DataFrame table.
+    :param fastqc_path: String - fastqc_data.txt path.
+    :return: DataFrame
+    """
     data_string = ''
     read = False
     with open(fastqc_path) as fastqc_data:
@@ -21,6 +27,16 @@ def readFastqcData(fastqc_path):
     return df
 
 def run(inputs, output, fastqc_data, seq_columns, id_column):
+    """
+    This function create csv file which contain the fastqc 'overrepresented sequences'
+    and their names from the input files.
+    :param inputs: Array - of paths to the input files.
+    :param output: String - path to the output file.
+    :param fastqc_data: String - path of the fastqc output (fastqc_data.txt).
+    :param seq_columns: Array - array of strings, which contain all the sequences columns that mentioned in the inputs file.
+    :param id_column: String - the id column name in the inputs file.
+    :return:
+    """
     columns_dic = {}
     for path in inputs:
         input_file = pd.read_csv(path, sep='\t')
@@ -75,7 +91,7 @@ if __name__ == '__main__':
 
         if arg == '--help' or arg == '-h':
             print(f'\nfastqcDataClassify Manual:\n'
-                  f' -i <path1,path2,...>:\ncsv file separated by tab, for multiply input files use `,`, all the input files should be in the same format.\n\n'
+                  f' -i <path1,path2,...>:\n csv files separated by `tab`, for multiply input files use `,`. all the input files should be in the same format and they should contain sequence column and id column.\n\n'
                   f' -f <path>:\nfastqc_data input path.\n\n' 
                   f' -o <path>:\noutput path.\n\n'
                   f' -sc <column_name1,column_name2,...>:\ncolumn: sequence columns name, columns should include the sequence. for multiply seq columns use `,` .\n\n'
